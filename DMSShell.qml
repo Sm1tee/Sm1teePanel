@@ -78,7 +78,7 @@ Item {
 
   Loader {
       id: dankBarLoader
-      asynchronous: false
+      asynchronous: true  // Асинхронная загрузка для ускорения старта
 
       property var currentPosition: SettingsData.dankBarPosition
       property bool initialized: false
@@ -102,7 +102,7 @@ Item {
 
   Loader {
       id: dockLoader
-      active: true
+      active: SettingsData.showDock  // Загружается только если включен в настройках
       asynchronous: false
 
       property var currentPosition: SettingsData.dockPosition

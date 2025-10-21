@@ -335,9 +335,7 @@ Singleton {
         root.retryAttempts = 0
         root.persistentRetryCount = 0
         
-        if (!SettingsData.weatherEnabled) {
-            SettingsData.weatherEnabled = true
-        }
+        // Убрано принудительное включение weatherEnabled
         
         if (!location) {
             updateLocation(true)

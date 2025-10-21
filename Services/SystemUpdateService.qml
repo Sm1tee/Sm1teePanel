@@ -201,10 +201,11 @@ Singleton {
         updater.running = true
     }
 
-    Timer {
-        interval: 30 * 60 * 1000
-        repeat: true
-        running: distributionSupported && pkgManager
-        onTriggered: checkForUpdates()
-    }
+    // Timer отключен - проверка только при запуске
+    // Timer {
+    //     interval: 30 * 60 * 1000
+    //     repeat: true
+    //     running: distributionSupported && pkgManager
+    //     onTriggered: checkForUpdates()
+    // }
 }

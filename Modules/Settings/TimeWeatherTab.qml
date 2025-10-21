@@ -390,9 +390,10 @@ Item {
 
                             anchors.verticalCenter: parent.verticalCenter
                             checked: SettingsData.weatherEnabled
+                            
                             onToggled: checked => {
-                                           return SettingsData.setWeatherEnabled(
-                                               checked)
+                                           SettingsData.weatherEnabled = checked
+                                           SettingsData.saveSettings()
                                        }
                         }
                     }

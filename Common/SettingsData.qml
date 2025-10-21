@@ -112,7 +112,7 @@ Singleton {
     property real launcherLogoBrightness: 0.5
     property real launcherLogoContrast: 1
     property int launcherLogoSizeOffset: 0
-    property bool weatherEnabled: true
+    property bool weatherEnabled: false
     property string fontFamily: "Inter Variable"
     property string monoFontFamily: "Fira Code"
     property int fontWeight: Font.Normal

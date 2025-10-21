@@ -25,7 +25,7 @@ Text {
     }
 
     color: Theme.surfaceText
-    font.pixelSize: Appearance.fontSize.normal
+    font.pixelSize: Theme.fontSizeMedium
     font.family: resolvedFontFamily
     font.weight: SettingsData.fontWeight
     wrapMode: Text.WordWrap

@@ -2148,11 +2148,11 @@ Item {
                                 buttonSize: 32
                                 iconName: "add"
                                 iconSize: Theme.iconSizeSmall
-                                enabled: SettingsData.fontScale < 2.0
+                                enabled: SettingsData.fontScale < 1.5
                                 backgroundColor: Theme.surfaceContainerHigh
                                 iconColor: Theme.surfaceText
                                 onClicked: {
-                                    var newScale = Math.min(2.0, SettingsData.fontScale + 0.05)
+                                    var newScale = Math.min(1.5, SettingsData.fontScale + 0.05)
                                     SettingsData.setFontScale(newScale)
                                 }
                             }

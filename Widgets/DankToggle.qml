@@ -19,12 +19,12 @@ Item {
 
     readonly property bool showText: text && !hideText
 
-    readonly property int trackWidth: 52
-    readonly property int trackHeight: 30
-    readonly property int insetCircle: 24
+    readonly property int trackWidth: Math.round(52 * SettingsData.fontScale)
+    readonly property int trackHeight: Math.round(30 * SettingsData.fontScale)
+    readonly property int insetCircle: Math.round(24 * SettingsData.fontScale)
 
     width: showText ? parent.width : trackWidth
-    height: showText ? 60 : trackHeight
+    height: showText ? Math.round(60 * SettingsData.fontScale) : trackHeight
 
     function handleClick() {
         if (!enabled) return
@@ -64,14 +64,14 @@ Item {
 
             StyledText {
                 text: toggle.text
-                font.pixelSize: Appearance.fontSize.normal
+                font.pixelSize: Theme.fontSizeMedium
                 font.weight: Font.Medium
                 opacity: toggle.enabled ? 1 : 0.4
             }
 
             StyledText {
                 text: toggle.description
-                font.pixelSize: Appearance.fontSize.small
+                font.pixelSize: Theme.fontSizeSmall
                 color: Theme.surfaceVariantText
                 wrapMode: Text.WordWrap
                 width: Math.min(implicitWidth, toggle.width - 120)

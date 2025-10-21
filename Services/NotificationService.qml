@@ -28,7 +28,7 @@ Singleton {
     property int maxIngressPerSecond: 20
     property double _lastIngressSec: 0
     property int _ingressCountThisSec: 0
-    property int maxStoredNotifications: 300
+    property int maxStoredNotifications: 100  // Уменьшено с 300 для экономии памяти
 
     property var _dismissQueue: []
     property int _dismissBatchSize: 8

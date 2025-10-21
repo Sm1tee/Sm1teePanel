@@ -18,7 +18,7 @@ TextMetrics {
         return requestedFont
     }
 
-    font.pixelSize: Appearance.fontSize.normal
+    font.pixelSize: Theme.fontSizeMedium
     font.family: resolvedFontFamily
     font.weight: SettingsData.fontWeight
 }

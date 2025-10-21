@@ -11,7 +11,7 @@ Singleton {
     id: root
 
     property int refCount: 0
-    property int updateInterval: refCount > 0 ? 3000 : 30000
+    property int updateInterval: refCount > 0 ? 5000 : 30000  // Увеличено с 3 до 5 секунд
     property bool isUpdating: false
     property bool dgopAvailable: true // Always available with native commands
 

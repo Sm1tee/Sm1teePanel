@@ -14,12 +14,11 @@ Item {
 
     readonly property bool isVertical: axis?.isVertical ?? false
 
-    implicitHeight: layoutLoader.item ? (layoutLoader.item.implicitHeight || layoutLoader.item.height) : 0
-    implicitWidth: layoutLoader.item ? (layoutLoader.item.implicitWidth || layoutLoader.item.width) : 0
+    implicitHeight: layoutLoader.status === Loader.Ready ? layoutLoader.item.implicitHeight : 0
+    implicitWidth: layoutLoader.status === Loader.Ready ? layoutLoader.item.implicitWidth : 0
 
     Loader {
         id: layoutLoader
-        anchors.fill: parent
         sourceComponent: root.isVertical ? columnComp : rowComp
     }
 
