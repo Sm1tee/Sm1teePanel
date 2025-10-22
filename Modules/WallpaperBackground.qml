@@ -210,10 +210,8 @@ Variants {
                 layer.enabled: false
                 asynchronous: true
                 smooth: true
-                cache: false  // Отключен кэш для экономии памяти
+                cache: true
                 fillMode: Image.PreserveAspectCrop
-                sourceSize.width: modelData.width  // Ограничение размера загружаемого изображения
-                sourceSize.height: modelData.height
             }
 
             Image {
@@ -224,10 +222,8 @@ Variants {
                 layer.enabled: false
                 asynchronous: true
                 smooth: true
-                cache: false  // Отключен кэш для экономии памяти
+                cache: true
                 fillMode: Image.PreserveAspectCrop
-                sourceSize.width: modelData.width  // Ограничение размера загружаемого изображения
-                sourceSize.height: modelData.height
 
                 onStatusChanged: {
                     if (status !== Image.Ready)
