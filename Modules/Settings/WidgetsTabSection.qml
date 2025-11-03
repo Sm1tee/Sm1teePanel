@@ -32,7 +32,7 @@ Column {
         width: parent.width
         spacing: Theme.spacingM
 
-        DankIcon {
+        Icon {
             name: root.titleIcon
             size: Theme.iconSize
             color: Theme.primary
@@ -85,7 +85,7 @@ Column {
                                           Theme.outline.b, 0.2)
                     border.width: 0
 
-                    DankIcon {
+                    Icon {
                         name: "drag_indicator"
                         size: Theme.iconSize - 4
                         color: Theme.outline
@@ -95,7 +95,7 @@ Column {
                         opacity: 0.8
                     }
 
-                    DankIcon {
+                    Icon {
                         name: modelData.icon
                         size: Theme.iconSize
                         color: modelData.enabled ? Theme.primary : Theme.outline
@@ -147,7 +147,7 @@ Column {
                             height: 32
                             visible: false
 
-                            DankDropdown {
+                            Dropdown {
                                 id: gpuDropdown
                                 anchors.fill: parent
                                 popupWidth: -1
@@ -199,7 +199,7 @@ Column {
                             height: 28
                             visible: modelData.id === "diskUsage"
                             
-                            DankDropdown {
+                            Dropdown {
                                 id: diskMountDropdown
                                 width: 100
                                 height: 28
@@ -242,7 +242,7 @@ Column {
                             height: 32
                             visible: modelData.warning !== undefined && modelData.warning !== ""
 
-                            DankIcon {
+                            Icon {
                                 name: "warning"
                                 size: 20
                                 color: Theme.error
@@ -299,14 +299,14 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             id: minimumWidthButton
                             buttonSize: 28
                             visible: modelData.id === "cpuUsage"
                                      || modelData.id === "memUsage"
                                      || modelData.id === "cpuTemp"
                             iconName: "straighten"
-                            iconSize: 16
+                            iconSize: Theme.iconSizeSmall
                             iconColor: (modelData.minimumWidth !== undefined ? modelData.minimumWidth : true) ? Theme.primary : Theme.outline
                             onClicked: {
                                 var currentEnabled = modelData.minimumWidth !== undefined ? modelData.minimumWidth : true
@@ -336,12 +336,12 @@ Column {
                                      || modelData.id === "focusedWindow"
                                      || modelData.id === "runningApps"
 
-                            DankActionButton {
+                            ActionButton {
                                 id: smallSizeButton
                                 buttonSize: 28
                                 visible: modelData.id === "music"
                                 iconName: "photo_size_select_small"
-                                iconSize: 16
+                                iconSize: Theme.iconSizeSmall
                                 iconColor: SettingsData.mediaSize
                                            === 0 ? Theme.primary : Theme.outline
                                 onClicked: {
@@ -362,12 +362,12 @@ Column {
                                 }
                             }
 
-                            DankActionButton {
+                            ActionButton {
                                 id: mediumSizeButton
                                 buttonSize: 28
                                 visible: modelData.id === "music"
                                 iconName: "photo_size_select_actual"
-                                iconSize: 16
+                                iconSize: Theme.iconSizeSmall
                                 iconColor: SettingsData.mediaSize
                                            === 1 ? Theme.primary : Theme.outline
                                 onClicked: {
@@ -388,12 +388,12 @@ Column {
                                 }
                             }
 
-                            DankActionButton {
+                            ActionButton {
                                 id: largeSizeButton
                                 buttonSize: 28
                                 visible: modelData.id === "music"
                                 iconName: "photo_size_select_large"
-                                iconSize: 16
+                                iconSize: Theme.iconSizeSmall
                                 iconColor: SettingsData.mediaSize
                                            === 2 ? Theme.primary : Theme.outline
                                 onClicked: {
@@ -414,7 +414,7 @@ Column {
                                 }
                             }
 
-                            DankActionButton {
+                            ActionButton {
                                 id: compactModeButton
                                 buttonSize: 28
                                 visible: modelData.id === "clock"
@@ -429,7 +429,7 @@ Column {
                                         return SettingsData.runningAppsCompactMode ? "zoom_out" : "zoom_in"
                                     return "zoom_in"
                                 }
-                                iconSize: 16
+                                iconSize: Theme.iconSizeSmall
                                 iconColor: {
                                     if (modelData.id === "clock")
                                         return SettingsData.clockCompactMode ? Theme.primary : Theme.outline
@@ -477,12 +477,12 @@ Column {
                                 }
                             }
                             
-                            DankActionButton {
+                            ActionButton {
                                 id: dateOrderButton
                                 buttonSize: 28
                                 visible: modelData.id === "clock"
                                 iconName: "swap_horiz"
-                                iconSize: 16
+                                iconSize: Theme.iconSizeSmall
                                 iconColor: SettingsData.clockDateFirst ? Theme.primary : Theme.outline
                                 onClicked: {
                                     SettingsData.clockDateFirst = !SettingsData.clockDateFirst
@@ -535,11 +535,11 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             visible: modelData.id === "controlCenterButton"
                             buttonSize: 32
                             iconName: "more_vert"
-                            iconSize: 18
+                            iconSize: Theme.iconSizeSmall + 2
                             iconColor: Theme.outline
                             onClicked: {
                                 controlCenterContextMenu.widgetData = modelData
@@ -553,11 +553,11 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             visible: modelData.id === "keyboard_layout_name"
                             buttonSize: 32
                             iconName: "more_vert"
-                            iconSize: 18
+                            iconSize: Theme.iconSizeSmall + 2
                             iconColor: Theme.outline
                             onClicked: {
                                 keyboardLayoutContextMenu.widgetData = modelData
@@ -570,12 +570,12 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             id: visibilityButton
                             visible: modelData.id !== "spacer"
                             buttonSize: 32
                             iconName: modelData.enabled ? "visibility" : "visibility_off"
-                            iconSize: 18
+                            iconSize: Theme.iconSizeSmall + 2
                             iconColor: modelData.enabled ? Theme.primary : Theme.outline
                             onClicked: {
                                 root.itemEnabledChanged(root.sectionId,
@@ -603,10 +603,10 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            ActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
-                                iconSize: 14
+                                iconSize: Theme.iconSizeSmall - 2
                                 iconColor: Theme.outline
                                 onClicked: {
                                     var currentSize = modelData.size || 20
@@ -624,10 +624,10 @@ Column {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            DankActionButton {
+                            ActionButton {
                                 buttonSize: 24
                                 iconName: "add"
-                                iconSize: 14
+                                iconSize: Theme.iconSizeSmall - 2
                                 iconColor: Theme.outline
                                 onClicked: {
                                     var currentSize = modelData.size || 20
@@ -640,10 +640,10 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             buttonSize: 32
                             iconName: "close"
-                            iconSize: 18
+                            iconSize: Theme.iconSizeSmall + 2
                             iconColor: Theme.error
                             onClicked: {
                                 root.removeWidget(root.sectionId, index)
@@ -759,8 +759,8 @@ Column {
         property int widgetIndex: -1
 
 
-        width: 200
-        height: 120
+        width: Math.max(200, Math.min(300, 200 * SettingsData.fontScale))
+        height: Math.max(120, Math.min(180, 120 * SettingsData.fontScale))
         padding: 0
         modal: true
         focus: true
@@ -793,7 +793,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        Icon {
                             name: "lan"
                             size: 16
                             color: Theme.surfaceText
@@ -809,7 +809,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: networkToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -846,7 +846,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        Icon {
                             name: "bluetooth"
                             size: 16
                             color: Theme.surfaceText
@@ -862,7 +862,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: bluetoothToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -899,7 +899,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        Icon {
                             name: "volume_up"
                             size: 16
                             color: Theme.surfaceText
@@ -915,7 +915,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: audioToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -951,8 +951,8 @@ Column {
         property string sectionId: ""
         property int widgetIndex: -1
 
-        width: 200
-        height: 50
+        width: Math.max(200, Math.min(300, 200 * SettingsData.fontScale))
+        height: Math.max(50, Math.min(80, 50 * SettingsData.fontScale))
         padding: 0
         modal: true
         focus: true
@@ -973,33 +973,43 @@ Column {
 
                 Rectangle {
                     width: parent.width
-                    height: 32
+                    height: Math.max(32, Math.max(flagRowContent.implicitHeight, flagToggle.height) + Theme.spacingS * 2)
                     radius: Theme.cornerRadius
                     color: flagToggleArea.containsMouse ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12) : "transparent"
 
-                    Row {
+                    Item {
+                        id: flagRowContent
                         anchors.left: parent.left
-                        anchors.leftMargin: Theme.spacingS
+                        anchors.right: flagToggle.left
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: Theme.spacingS
+                        anchors.leftMargin: Theme.spacingS
+                        anchors.rightMargin: Theme.spacingS
+                        height: childrenRect.height
+                        
+                        Row {
+                            width: parent.width
+                            spacing: Theme.spacingS
 
-                        DankIcon {
-                            name: "flag"
-                            size: 16
-                            color: Theme.surfaceText
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                            Icon {
+                                name: "flag"
+                                size: 16
+                                color: Theme.surfaceText
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
 
-                        StyledText {
-                            text: "Показать флаг"
-                            font.pixelSize: Theme.fontSizeSmall
-                            color: Theme.surfaceText
-                            font.weight: Font.Normal
-                            anchors.verticalCenter: parent.verticalCenter
+                            StyledText {
+                                text: "Показать флаг"
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceText
+                                font.weight: Font.Normal
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: parent.width - 16 - Theme.spacingS
+                                elide: Text.ElideRight
+                            }
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: flagToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1030,42 +1040,42 @@ Column {
     Loader {
         id: smallTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 
     Loader {
         id: mediumTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 
     Loader {
         id: largeTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 
     Loader {
         id: compactTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
     
     Loader {
         id: dateOrderTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 
     Loader {
         id: visibilityTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 
     Loader {
         id: minimumWidthTooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: Tooltip {}
     }
 }

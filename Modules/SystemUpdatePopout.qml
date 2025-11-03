@@ -8,7 +8,7 @@ import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+Popout {
     id: systemUpdatePopout
 
     property var parentWidget: null
@@ -25,7 +25,7 @@ DankPopout {
     popupWidth: Math.max(400, Math.min(550, 400 * SettingsData.fontScale))
     popupHeight: Math.max(500, Math.min(700, 500 * SettingsData.fontScale))
     triggerX: Screen.width - 600 - Theme.spacingL
-    triggerY: Math.max(26 + SettingsData.dankBarInnerPadding + 4, Theme.barHeight - 4 - (8 - SettingsData.dankBarInnerPadding)) + SettingsData.dankBarSpacing + SettingsData.dankBarBottomGap - 2
+    triggerY: Math.max(26 + SettingsData.barInnerPadding + 4, Theme.barHeight - 4 - (8 - SettingsData.barInnerPadding)) + SettingsData.barSpacing + SettingsData.barBottomGap - 2
     triggerWidth: 55
     positioning: ""
     screen: triggerScreen
@@ -102,10 +102,10 @@ DankPopout {
                         StyledText {
                             anchors.verticalCenter: parent.verticalCenter
                             text: {
-                                if (SystemUpdateService.isChecking) return "Checking...";
-                                if (SystemUpdateService.hasError) return "Error";
-                                if (SystemUpdateService.updateCount === 0) return "Up to date";
-                                return SystemUpdateService.updateCount + " updates";
+                                if (SystemUpdateService.isChecking) return "Проверка...";
+                                if (SystemUpdateService.hasError) return "Ошибка";
+                                if (SystemUpdateService.updateCount === 0) return "Обновлено";
+                                return SystemUpdateService.updateCount + " обновлений";
                             }
                             font.pixelSize: Theme.fontSizeMedium
                             color: {
@@ -114,11 +114,11 @@ DankPopout {
                             }
                         }
 
-                        DankActionButton {
+                        ActionButton {
                             id: checkForUpdatesButton
                             buttonSize: 28
                             iconName: "refresh"
-                            iconSize: 18
+                            iconSize: Theme.iconSizeSmall + 2
                             z: 15
                             iconColor: Theme.surfaceText
                             enabled: !SystemUpdateService.isChecking
@@ -168,18 +168,18 @@ DankPopout {
                             width: parent.width
                             text: {
                                 if (SystemUpdateService.hasError) {
-                                    return "Failed to check for updates:\n" + SystemUpdateService.errorMessage;
+                                    return "Не удалось проверить обновления:\n" + SystemUpdateService.errorMessage;
                                 }
                                 if (!SystemUpdateService.helperAvailable) {
-                                    return "No package manager found. Please install 'paru' or 'yay' on Arch-based systems to check for updates.";
+                                    return "Менеджер пакетов не найден. Установите 'paru' или 'yay' для проверки обновлений.";
                                 }
                                 if (SystemUpdateService.isChecking) {
-                                    return "Checking for updates...";
+                                    return "Проверка обновлений...";
                                 }
                                 if (SystemUpdateService.updateCount === 0) {
-                                    return "Your system is up to date!";
+                                    return "Ваша система обновлена!";
                                 }
-                                return `Found ${SystemUpdateService.updateCount} packages to update:`;
+                                return `Найдено ${SystemUpdateService.updateCount} пакетов для обновления:`;
                             }
                             font.pixelSize: Theme.fontSizeMedium
                             color: {
@@ -190,7 +190,7 @@ DankPopout {
                             visible: SystemUpdateService.updateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking
                         }
 
-                        DankListView {
+                        ListView {
                             id: packagesList
 
                             width: parent.width
@@ -274,7 +274,7 @@ DankPopout {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            Icon {
                                 name: "system_update_alt"
                                 size: Theme.iconSize
                                 color: Theme.primary
@@ -318,7 +318,7 @@ DankPopout {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            Icon {
                                 name: "close"
                                 size: Theme.iconSize
                                 color: Theme.surfaceText

@@ -4,7 +4,7 @@ import qs.Common
 import qs.Modals.Common
 import qs.Widgets
 
-DankModal {
+Modal {
     id: root
 
     property var allWidgets: []
@@ -17,6 +17,15 @@ DankModal {
     property var parentModal: null
 
     signal widgetSelected(string widgetId, string targetSection)
+
+    function getSectionName(section) {
+        switch(section.toLowerCase()) {
+            case "left": return "левую"
+            case "center": return "центральную"
+            case "right": return "правую"
+            default: return section
+        }
+    }
 
     function updateFilteredWidgets() {
         if (!searchQuery || searchQuery.length === 0) {
@@ -169,7 +178,7 @@ DankModal {
             }
         }
 
-        DankActionButton {
+        ActionButton {
             iconName: "close"
             iconSize: Theme.iconSize - 2
             iconColor: Theme.outline
@@ -192,7 +201,7 @@ DankModal {
                 width: parent.width
                 spacing: Theme.spacingM
 
-                DankIcon {
+                Icon {
                     name: "add_circle"
                     size: Theme.iconSize
                     color: Theme.primary
@@ -200,7 +209,7 @@ DankModal {
                 }
 
                 StyledText {
-                    text: "Добавить виджет в " + root.targetSection + " секцию"
+                    text: "Добавить виджет в " + root.getSectionName(root.targetSection) + " секцию"
                     font.pixelSize: Theme.fontSizeLarge
                     font.weight: Font.Medium
                     color: Theme.surfaceText
@@ -209,14 +218,14 @@ DankModal {
             }
 
             StyledText {
-                text: "Выберите виджет для добавления в " + root.targetSection.toLowerCase() + " секцию верхней панели. Вы можете добавить несколько экземпляров одного виджета при необходимости."
+                text: "Выберите виджет для добавления в " + root.getSectionName(root.targetSection) + " секцию панели."
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.outline
                 width: parent.width
                 wrapMode: Text.WordWrap
             }
 
-            DankTextField {
+            TextField {
                 id: searchField
                 width: parent.width
                 height: 48
@@ -251,7 +260,7 @@ DankModal {
                 }
             }
 
-            DankListView {
+            ListView {
                 id: widgetList
 
                 width: parent.width
@@ -280,7 +289,7 @@ DankModal {
                         anchors.margins: Theme.spacingM
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: modelData.icon
                             size: Theme.iconSize
                             color: Theme.primary
@@ -311,7 +320,7 @@ DankModal {
                             }
                         }
 
-                        DankIcon {
+                        Icon {
                             name: "add"
                             size: Theme.iconSize - 4
                             color: Theme.primary

@@ -9,11 +9,11 @@ Rectangle {
     property int currentIndex: 0
     property var parentModal: null
     readonly property var sidebarItems: [{
-        "text": "Время и Погода",
-        "icon": "schedule"
-    }, {
         "text": "Персонализация",
         "icon": "person"
+    }, {
+        "text": "Время и Погода",
+        "icon": "schedule"
     }, {
         "text": "Дисплеи",
         "icon": "monitor"
@@ -82,7 +82,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    Icon {
                         name: modelData.icon || ""
                         size: Theme.iconSize - 2
                         color: parent.parent.isActive ? Theme.primaryText : Theme.surfaceText

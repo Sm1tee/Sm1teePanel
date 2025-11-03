@@ -69,7 +69,7 @@ Singleton {
     property bool usingLegacy: false
     property var activeService: null
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("SM1TEE_SOCKET")
 
     Component.onCompleted: {
         if (!socketPath || socketPath.length === 0) {
@@ -186,6 +186,12 @@ Singleton {
     function connectToWifiAndSetPreference(ssid, password, username = "") {
         if (activeService && activeService.connectToWifiAndSetPreference) {
             activeService.connectToWifiAndSetPreference(ssid, password, username)
+        }
+    }
+
+    function connectToHiddenWifi(ssid, password = "", username = "") {
+        if (activeService && activeService.connectToHiddenWifi) {
+            activeService.connectToHiddenWifi(ssid, password, username)
         }
     }
 

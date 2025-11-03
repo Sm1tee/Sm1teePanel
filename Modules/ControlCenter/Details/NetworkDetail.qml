@@ -53,7 +53,7 @@ Rectangle {
             height: parent.height
         }
         
-        DankButtonGroup {
+        ButtonGroup {
             id: preferenceControls
             anchors.verticalCenter: parent.verticalCenter
             visible: NetworkService.ethernetConnected
@@ -99,7 +99,7 @@ Rectangle {
             anchors.centerIn: parent
             spacing: Theme.spacingM
 
-            DankIcon {
+            Icon {
                 anchors.horizontalCenter: parent.horizontalCenter
                 name: "sync"
                 size: 32
@@ -116,7 +116,7 @@ Rectangle {
 
             StyledText {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: NetworkService.wifiEnabled ? "Disabling WiFi..." : "Enabling WiFi..."
+                text: NetworkService.wifiEnabled ? "Отключение WiFi..." : "Включение WiFi..."
                 font.pixelSize: Theme.fontSizeMedium
                 color: Theme.surfaceText
                 horizontalAlignment: Text.AlignHCenter
@@ -139,7 +139,7 @@ Rectangle {
             spacing: Theme.spacingL
             width: parent.width
             
-            DankIcon {
+            Icon {
                 anchors.horizontalCenter: parent.horizontalCenter
                 name: "wifi_off"
                 size: 48
@@ -184,7 +184,7 @@ Rectangle {
         }
     }
 
-    DankFlickable {
+    Flickable {
         id: wifiContent
         anchors.top: headerRow.bottom
         anchors.left: parent.left
@@ -206,7 +206,7 @@ Rectangle {
                 height: 200
                 visible: NetworkService.wifiInterface && NetworkService.wifiNetworks?.length < 1 && !NetworkService.wifiToggling && NetworkService.isScanning
 
-                DankIcon {
+                Icon {
                     anchors.centerIn: parent
                     name: "refresh"
                     size: 48
@@ -253,7 +253,7 @@ Rectangle {
                         anchors.leftMargin: Theme.spacingM
                         spacing: Theme.spacingS
                         
-                        DankIcon {
+                        Icon {
                             name: {
                                 let strength = modelData.signal || 0
                                 if (strength >= 50) return "wifi"
@@ -270,7 +270,7 @@ Rectangle {
                             width: 200
                             
                             StyledText {
-                                text: modelData.ssid || "Unknown Network"
+                                text: modelData.ssid || "Неизвестная сеть"
                                 font.pixelSize: Theme.fontSizeMedium
                                 color: Theme.surfaceText
                                 font.weight: modelData.ssid === NetworkService.currentWifiSSID ? Font.Medium : Font.Normal
@@ -282,13 +282,13 @@ Rectangle {
                                 spacing: Theme.spacingXS
 
                                 StyledText {
-                                    text: modelData.ssid === NetworkService.currentWifiSSID ? "Connected" : (modelData.secured ? "Secured" : "Open")
+                                    text: modelData.ssid === NetworkService.currentWifiSSID ? "Подключено" : (modelData.secured ? "Защищено" : "Открыто")
                                     font.pixelSize: Theme.fontSizeSmall
                                     color: Theme.surfaceVariantText
                                 }
                                 
                                 StyledText {
-                                    text: modelData.saved ? "• Saved" : ""
+                                    text: modelData.saved ? "• Сохранено" : ""
                                     font.pixelSize: Theme.fontSizeSmall
                                     color: Theme.primary
                                     visible: text.length > 0
@@ -303,7 +303,7 @@ Rectangle {
                         }
                     }
                     
-                    DankActionButton {
+                    ActionButton {
                         id: optionsButton
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -344,6 +344,47 @@ Rectangle {
                     
                 }
             }
+            
+            // Кнопка добавления скрытой сети
+            Rectangle {
+                width: parent.width
+                height: 50
+                radius: Theme.cornerRadius
+                color: addHiddenNetworkMouseArea.containsMouse ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.08) : Theme.surfaceContainerHighest
+                border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.12)
+                border.width: 0
+                visible: NetworkService.wifiEnabled && !NetworkService.wifiToggling
+                
+                Row {
+                    anchors.centerIn: parent
+                    spacing: Theme.spacingS
+                    
+                    Icon {
+                        name: "add"
+                        size: Theme.iconSize - 4
+                        color: Theme.primary
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    
+                    StyledText {
+                        text: "Добавить скрытую сеть"
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: Theme.primary
+                        font.weight: Font.Medium
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                
+                MouseArea {
+                    id: addHiddenNetworkMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        hiddenNetworkModal.show()
+                    }
+                }
+            }
         }
     }
     
@@ -366,7 +407,7 @@ Rectangle {
         }
         
         MenuItem {
-            text: networkContextMenu.currentConnected ? "Disconnect" : "Connect"
+            text: networkContextMenu.currentConnected ? "Отключить" : "Подключить"
             height: 32
             
             contentItem: StyledText {
@@ -448,6 +489,10 @@ Rectangle {
 
     NetworkInfoModal {
         id: networkInfoModal
+    }
+    
+    HiddenNetworkModal {
+        id: hiddenNetworkModal
     }
 
 

@@ -105,6 +105,7 @@ Singleton {
 
     Component.onDestruction: {
         nmStateMonitor.running = false
+        sleepMonitor.running = false
     }
 
     function activate() {
@@ -117,6 +118,7 @@ Singleton {
     function addRef() {
         refCount++
         if (refCount === 1) {
+            doRefreshNetworkState() // Обновляем состояние при открытии виджета
             startAutoScan()
         }
     }
@@ -130,6 +132,7 @@ Singleton {
 
     function initializeDBusMonitors() {
         nmStateMonitor.running = true
+        sleepMonitor.running = true
         doRefreshNetworkState()
     }
 
@@ -178,6 +181,61 @@ Singleton {
         interval: 5000
         running: false
         onTriggered: nmStateMonitor.running = true
+    }
+
+    // Монитор пробуждения системы
+    Process {
+        id: sleepMonitor
+        command: ["gdbus", "monitor", "--system", "--dest", "org.freedesktop.login1"]
+        running: false
+
+        stdout: SplitParser {
+            splitMarker: "\n"
+            onRead: line => {
+                // PrepareForSleep(false) означает, что система проснулась
+                if (line.includes("PrepareForSleep") && line.includes("false")) {
+                    console.log("LegacyNetworkService: System woke up, refreshing network state")
+                    // Даем системе время восстановить соединения
+                    wakeUpRefreshTimer.restart()
+                }
+            }
+        }
+
+        onExited: exitCode => {
+            if (exitCode !== 0 && !sleepRestartTimer.running) {
+                console.warn("LegacyNetworkService: Sleep monitor failed, restarting in 5s")
+                sleepRestartTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id: sleepRestartTimer
+        interval: 5000
+        running: false
+        onTriggered: sleepMonitor.running = true
+    }
+
+    Timer {
+        id: wakeUpRefreshTimer
+        interval: 2000
+        running: false
+        onTriggered: {
+            console.log("LegacyNetworkService: First refresh after wake up")
+            doRefreshNetworkState()
+            // Повторяем через 3 секунды для надежности
+            wakeUpSecondRefreshTimer.restart()
+        }
+    }
+    
+    Timer {
+        id: wakeUpSecondRefreshTimer
+        interval: 3000
+        running: false
+        onTriggered: {
+            console.log("LegacyNetworkService: Second refresh after wake up")
+            doRefreshNetworkState()
+        }
     }
 
     Timer {
@@ -1040,6 +1098,83 @@ Singleton {
     function connectToWifiAndSetPreference(ssid, password) {
         connectToWifi(ssid, password)
         setNetworkPreference("wifi")
+    }
+
+    function connectToHiddenWifi(ssid, password = "", username = "") {
+        if (root.isConnecting) {
+            return
+        }
+
+        root.isConnecting = true
+        root.connectingSSID = ssid
+        root.connectionError = ""
+        root.connectionStatus = "connecting"
+
+        // For hidden networks, we need to add "hidden yes" parameter
+        if (password) {
+            hiddenWifiConnector.command = lowPriorityCmd.concat(["nmcli", "dev", "wifi", "connect", ssid, "password", password, "hidden", "yes"])
+        } else {
+            hiddenWifiConnector.command = lowPriorityCmd.concat(["nmcli", "dev", "wifi", "connect", ssid, "hidden", "yes"])
+        }
+        
+        hiddenWifiConnector.running = true
+    }
+
+    Process {
+        id: hiddenWifiConnector
+        running: false
+
+        property bool connectionSucceeded: false
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (text.includes("successfully")) {
+                    hiddenWifiConnector.connectionSucceeded = true
+                    ToastService.showInfo(`Подключено к ${root.connectingSSID}`)
+                    root.connectionError = ""
+                    root.connectionStatus = "connected"
+
+                    if (root.userPreference === "wifi" || root.userPreference === "auto") {
+                        setConnectionPriority("wifi")
+                    }
+                }
+            }
+        }
+
+        stderr: StdioCollector {
+            onStreamFinished: {
+                root.connectionError = text
+                root.lastConnectionError = text
+                if (!hiddenWifiConnector.connectionSucceeded && text.trim() !== "") {
+                    if (text.includes("password") || text.includes("authentication")) {
+                        root.connectionStatus = "invalid_password"
+                        root.passwordDialogShouldReopen = true
+                        ToastService.showError(`Неверный пароль для ${root.connectingSSID}`)
+                    } else {
+                        root.connectionStatus = "failed"
+                        ToastService.showError(`Не удалось подключиться к ${root.connectingSSID}`)
+                    }
+                }
+            }
+        }
+
+        onExited: exitCode => {
+            if (exitCode === 0 || hiddenWifiConnector.connectionSucceeded) {
+                if (!hiddenWifiConnector.connectionSucceeded) {
+                    ToastService.showInfo(`Подключено к ${root.connectingSSID}`)
+                    root.connectionStatus = "connected"
+                }
+            } else if (!hiddenWifiConnector.connectionSucceeded) {
+                if (root.connectionStatus !== "invalid_password") {
+                    ToastService.showError(`Не удалось подключиться к ${root.connectingSSID}`)
+                }
+            }
+
+            root.isConnecting = false
+            root.connectingSSID = ""
+            hiddenWifiConnector.connectionSucceeded = false
+            Qt.callLater(() => refreshNetworkState())
+        }
     }
 
     function toggleNetworkConnection(type) {

@@ -10,7 +10,7 @@ Item {
     id: displaysTab
 
     property var variantComponents: [{
-        "id": "dankBar",
+        "id": "bar",
         "name": "Панель",
         "description": "Системная панель с виджетами и информацией о системе",
         "icon": "toolbar"
@@ -62,7 +62,7 @@ Item {
         SettingsData.setScreenPreferences(prefs);
     }
 
-    DankFlickable {
+    Flickable {
         anchors.fill: parent
         anchors.topMargin: Theme.spacingL
         anchors.bottomMargin: Theme.spacingS
@@ -95,7 +95,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "brightness_6"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -111,12 +111,12 @@ Item {
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: nightModeToggle
 
                         width: parent.width
                         text: "Ночной режим"
-                        description: "Применить теплую цветовую температуру для снижения нагрузки на глаза. Используйте настройки автоматизации ниже для управления активацией."
+                        description: "Применить теплую цветовую температуру для снижения нагрузки на глаза."
                         checked: DisplayService.nightModeEnabled
                         onToggled: checked => {
                                        DisplayService.toggleNightMode()
@@ -137,7 +137,7 @@ Item {
                         leftPadding: Theme.spacingM
                         rightPadding: Theme.spacingM
 
-                        DankDropdown {
+                        Dropdown {
                             width: parent.width - parent.leftPadding - parent.rightPadding
                             text: "Температура"
                             description: "Цветовая температура для ночного режима"
@@ -156,11 +156,11 @@ Item {
                         }
                     }
 
-                    DankToggle {
+                    Toggle {
                         id: automaticToggle
                         width: parent.width
-                        text: "Автоматическое управление"
-                        description: "Настраивать гамму только на основе правил времени или местоположения."
+                        text: "Автонастройка гаммы"
+                        description: "Включать и выключать ночной режим по рассписанию"
                         checked: SessionData.nightModeAutoEnabled
                         onToggled: checked => {
                                        if (checked && !DisplayService.nightModeEnabled) {
@@ -192,38 +192,31 @@ Item {
                             }
                         }
 
-                        Item {
-                            width: 200
-                            height: 45 + Theme.spacingM
+                        ButtonGroup {
+                            id: modeButtonGroup
+                            width: 300
+                            model: ["Время", "Местоположение"]
+                            currentIndex: SessionData.nightModeAutoMode === "location" ? 1 : 0
+                            checkEnabled: false
+                            fillWidth: false
 
-                            DankTabBar {
-                                id: modeTabBarNight
-                                width: 200
-                                height: 45
-                                model: [{
-                                        "text": "Время",
-                                        "icon": "access_time"
-                                    }, {
-                                        "text": "Местоположение",
-                                        "icon": "place"
-                                    }]
+                            Component.onCompleted: {
+                                currentIndex = SessionData.nightModeAutoMode === "location" ? 1 : 0
+                            }
 
-                                Component.onCompleted: {
-                                    currentIndex = SessionData.nightModeAutoMode === "location" ? 1 : 0
-                                    Qt.callLater(updateIndicator)
-                                }
-
-                                onTabClicked: index => {
-                                                  DisplayService.setNightModeAutomationMode(index === 1 ? "location" : "time")
-                                                  currentIndex = index
-                                              }
-
-                                Connections {
-                                    target: SessionData
-                                    function onNightModeAutoModeChanged() {
-                                        modeTabBarNight.currentIndex = SessionData.nightModeAutoMode === "location" ? 1 : 0
-                                        Qt.callLater(modeTabBarNight.updateIndicator)
+                            onSelectionChanged: (index, selected) => {
+                                if (selected) {
+                                    const newMode = index === 1 ? "location" : "time"
+                                    if (SessionData.nightModeAutoMode !== newMode) {
+                                        DisplayService.setNightModeAutomationMode(newMode)
                                     }
+                                }
+                            }
+
+                            Connections {
+                                target: SessionData
+                                function onNightModeAutoModeChanged() {
+                                    modeButtonGroup.currentIndex = SessionData.nightModeAutoMode === "location" ? 1 : 0
                                 }
                             }
                         }
@@ -274,7 +267,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
 
-                                DankDropdown {
+                                Dropdown {
                                     width: 100
                                     height: 40
                                     dropdownWidth: 100
@@ -292,7 +285,7 @@ Item {
                                                     }
                                 }
 
-                                DankDropdown {
+                                Dropdown {
                                     width: 100
                                     height: 40
                                     dropdownWidth: 100
@@ -323,7 +316,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
 
-                                DankDropdown {
+                                Dropdown {
                                     width: 100
                                     height: 40
                                     dropdownWidth: 100
@@ -341,7 +334,7 @@ Item {
                                                     }
                                 }
 
-                                DankDropdown {
+                                Dropdown {
                                     width: 100
                                     height: 40
                                     dropdownWidth: 100
@@ -367,7 +360,7 @@ Item {
                             spacing: Theme.spacingM
                             width: parent.width
 
-                            DankToggle {
+                            Toggle {
                                 width: parent.width
                                 text: "Автоопределение местоположения"
                                 description: DisplayService.geoclueAvailable ? "Использовать автоматическое определение местоположения (geoclue2)" : "Служба Geoclue не запущена - невозможно автоматически определить местоположение"
@@ -404,7 +397,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankTextField {
+                                    TextField {
                                         width: 120
                                         height: 40
                                         text: SessionData.latitude.toString()
@@ -427,7 +420,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankTextField {
+                                    TextField {
                                         width: 120
                                         height: 40
                                         text: SessionData.longitude.toString()
@@ -473,7 +466,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "monitor"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -533,7 +526,7 @@ Item {
                                     anchors.margins: Theme.spacingS
                                     spacing: Theme.spacingM
 
-                                    DankIcon {
+                                    Icon {
                                         name: "desktop_windows"
                                         size: Theme.iconSize - 4
                                         color: Theme.primary
@@ -615,7 +608,7 @@ Item {
                                 width: parent.width
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                Icon {
                                     name: modelData.icon
                                     size: Theme.iconSize
                                     color: Theme.primary
@@ -664,7 +657,7 @@ Item {
                                     width: parent.width
                                     spacing: Theme.spacingXS
 
-                                    DankToggle {
+                                    Toggle {
                                         width: parent.width
                                         text: "Все дисплеи"
                                         description: "Показывать на всех подключенных дисплеях"
@@ -693,7 +686,7 @@ Item {
                                         Repeater {
                                             model: Quickshell.screens
 
-                                            delegate: DankToggle {
+                                            delegate: Toggle {
                                                 property string screenName: modelData.name
                                                 property string componentId: parent.parent.componentId
 

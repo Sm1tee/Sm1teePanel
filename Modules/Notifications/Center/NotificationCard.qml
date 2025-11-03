@@ -110,7 +110,7 @@ Rectangle {
         height: 92
         visible: !expanded
 
-        DankCircularImage {
+        CircularImage {
             id: iconContainer
             readonly property bool hasNotificationImage: notificationGroup?.latestNotification?.image && notificationGroup.latestNotification.image !== ""
 
@@ -165,7 +165,7 @@ Rectangle {
                     anchors.centerIn: parent
                     text: (notificationGroup?.count || 0) > 99 ? "99+" : (notificationGroup?.count || 0).toString()
                     color: Theme.primaryText
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fontSizeSmall * 0.75
                     font.weight: Font.Bold
                 }
             }
@@ -309,7 +309,7 @@ Rectangle {
                         anchors.centerIn: parent
                         text: (notificationGroup?.count || 0) > 99 ? "99+" : (notificationGroup?.count || 0).toString()
                         color: Theme.primaryText
-                        font.pixelSize: 9
+                        font.pixelSize: Theme.fontSizeSmall * 0.75
                         font.weight: Font.Bold
                     }
                 }
@@ -363,7 +363,7 @@ Rectangle {
                         anchors.margins: 12
                         anchors.bottomMargin: 8
 
-                        DankCircularImage {
+                        CircularImage {
                             id: messageIcon
 
                             readonly property bool hasNotificationImage: modelData?.image && modelData.image !== ""
@@ -666,12 +666,12 @@ Rectangle {
         width: 60
         height: 28
 
-        DankActionButton {
+        ActionButton {
             anchors.left: parent.left
             anchors.top: parent.top
             visible: (notificationGroup?.count || 0) > 1
             iconName: expanded ? "expand_less" : "expand_more"
-            iconSize: 18
+            iconSize: Theme.iconSizeSmall + 2
             buttonSize: 28
             onClicked: {
                 root.userInitiatedExpansion = true
@@ -679,11 +679,11 @@ Rectangle {
             }
         }
 
-        DankActionButton {
+        ActionButton {
             anchors.right: parent.right
             anchors.top: parent.top
             iconName: "close"
-            iconSize: 18
+            iconSize: Theme.iconSizeSmall + 2
             buttonSize: 28
             onClicked: NotificationService.dismissGroup(notificationGroup?.key || "")
         }

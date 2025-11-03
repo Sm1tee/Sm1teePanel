@@ -45,7 +45,7 @@ Rectangle {
             height: 48
             spacing: Theme.spacingM
 
-            DankIcon {
+            Icon {
                 name: BatteryService.getBatteryIcon()
                 size: Theme.iconSizeLarge
                 color: {
@@ -186,18 +186,18 @@ Rectangle {
             }
         }
 
-        DankButtonGroup {
+        ButtonGroup {
             property var profileModel: (typeof PowerProfiles !== "undefined") ? [PowerProfile.PowerSaver, PowerProfile.Balanced].concat(PowerProfiles.hasPerformanceProfile ? [PowerProfile.Performance] : []) : [PowerProfile.PowerSaver, PowerProfile.Balanced, PowerProfile.Performance]
             property int currentProfileIndex: {
                 if (typeof PowerProfiles === "undefined") return 1
                 return profileModel.findIndex(profile => isActiveProfile(profile))
             }
 
-            width: Math.min(parent.width - Theme.spacingL * 2, 450)
+            width: parent.width
+            fillWidth: true
             model: profileModel.map(profile => Theme.getPowerProfileLabel(profile))
             currentIndex: currentProfileIndex
             selectionMode: "single"
-            anchors.horizontalCenter: parent.horizontalCenter
             onSelectionChanged: (index, selected) => {
                 if (!selected) return
                 setProfile(profileModel[index])
@@ -225,7 +225,7 @@ Rectangle {
                     width: parent.width
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    Icon {
                         name: "warning"
                         size: Theme.iconSize
                         color: Theme.error

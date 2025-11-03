@@ -9,7 +9,7 @@ import qs.Widgets
 Item {
     id: root
 
-    DankFlickable {
+    Flickable {
         anchors.fill: parent
         anchors.topMargin: Theme.spacingL
         clip: true
@@ -42,7 +42,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "schedule"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -62,7 +62,7 @@ Item {
                             height: 1
                         }
 
-                        DankToggle {
+                        Toggle {
                             id: toggle
 
                             anchors.verticalCenter: parent.verticalCenter
@@ -96,7 +96,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "calendar_today"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -122,45 +122,43 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        Item {
+                        ButtonGroup {
+                            id: clockFormatGroup
                             width: parent.width
-                            height: clockFormatGroup.height
-
-                            DankButtonGroup {
-                                id: clockFormatGroup
-                                x: (parent.width - width) / 2
-                                model: ["Полный", "Без года", "Краткий", "День", "Свой"]
-                                selectionMode: "single"
-                                minButtonWidth: Math.floor((parent.width - spacing * 4) / 5)
-                                currentIndex: {
-                                    if (customFormatInput.visible) return 4
-                                    if (SettingsData.clockDateFormat === "d MMMM dddd yyyy") return 0
-                                    if (SettingsData.clockDateFormat === "d MMMM dddd") return 1
-                                    if (SettingsData.clockDateFormat === "d MMMM") return 2
-                                    if (SettingsData.clockDateFormat === "dddd") return 3
-                                    return 4
-                                }
-                                onSelectionChanged: (index, selected) => {
-                                    if (selected) {
-                                        const formatMap = [
-                                            "d MMMM dddd yyyy",
-                                            "d MMMM dddd",
-                                            "d MMMM",
-                                            "dddd",
-                                            ""
-                                        ]
-                                        if (index === 4) {
-                                            customFormatInput.visible = true
-                                        } else {
-                                            customFormatInput.visible = false
-                                            SettingsData.setClockDateFormat(formatMap[index])
-                                        }
+                            model: ["Полный", "Без года", "Краткий", "День", "Свой"]
+                            selectionMode: "single"
+                            fillWidth: true
+                            buttonPadding: Theme.spacingXS
+                            spacing: 2
+                            checkEnabled: false
+                            currentIndex: {
+                                if (customFormatInput.visible) return 4
+                                if (SettingsData.clockDateFormat === "d MMMM dddd yyyy") return 0
+                                if (SettingsData.clockDateFormat === "d MMMM dddd") return 1
+                                if (SettingsData.clockDateFormat === "d MMMM") return 2
+                                if (SettingsData.clockDateFormat === "dddd") return 3
+                                return 4
+                            }
+                            onSelectionChanged: (index, selected) => {
+                                if (selected) {
+                                    const formatMap = [
+                                        "d MMMM dddd yyyy",
+                                        "d MMMM dddd",
+                                        "d MMMM",
+                                        "dddd",
+                                        ""
+                                    ]
+                                    if (index === 4) {
+                                        customFormatInput.visible = true
+                                    } else {
+                                        customFormatInput.visible = false
+                                        SettingsData.setClockDateFormat(formatMap[index])
                                     }
                                 }
                             }
                         }
 
-                        DankTextField {
+                        TextField {
                             id: customFormatInput
                             width: parent.width
                             visible: false
@@ -183,45 +181,43 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        Item {
+                        ButtonGroup {
+                            id: lockFormatGroup
                             width: parent.width
-                            height: lockFormatGroup.height
-
-                            DankButtonGroup {
-                                id: lockFormatGroup
-                                x: (parent.width - width) / 2
-                                model: ["Полный", "Без года", "Краткий", "День", "Свой"]
-                                selectionMode: "single"
-                                minButtonWidth: Math.floor((parent.width - spacing * 4) / 5)
-                                currentIndex: {
-                                    if (customLockFormatInput.visible) return 4
-                                    if (SettingsData.lockDateFormat === "d MMMM dddd yyyy") return 0
-                                    if (SettingsData.lockDateFormat === "d MMMM dddd") return 1
-                                    if (SettingsData.lockDateFormat === "d MMMM") return 2
-                                    if (SettingsData.lockDateFormat === "dddd") return 3
-                                    return 4
-                                }
-                                onSelectionChanged: (index, selected) => {
-                                    if (selected) {
-                                        const formatMap = [
-                                            "d MMMM dddd yyyy",
-                                            "d MMMM dddd",
-                                            "d MMMM",
-                                            "dddd",
-                                            ""
-                                        ]
-                                        if (index === 4) {
-                                            customLockFormatInput.visible = true
-                                        } else {
-                                            customLockFormatInput.visible = false
-                                            SettingsData.setLockDateFormat(formatMap[index])
-                                        }
+                            model: ["Полный", "Без года", "Краткий", "День", "Свой"]
+                            selectionMode: "single"
+                            fillWidth: true
+                            buttonPadding: Theme.spacingXS
+                            spacing: 2
+                            checkEnabled: false
+                            currentIndex: {
+                                if (customLockFormatInput.visible) return 4
+                                if (SettingsData.lockDateFormat === "d MMMM dddd yyyy") return 0
+                                if (SettingsData.lockDateFormat === "d MMMM dddd") return 1
+                                if (SettingsData.lockDateFormat === "d MMMM") return 2
+                                if (SettingsData.lockDateFormat === "dddd") return 3
+                                return 4
+                            }
+                            onSelectionChanged: (index, selected) => {
+                                if (selected) {
+                                    const formatMap = [
+                                        "d MMMM dddd yyyy",
+                                        "d MMMM dddd",
+                                        "d MMMM",
+                                        "dddd",
+                                        ""
+                                    ]
+                                    if (index === 4) {
+                                        customLockFormatInput.visible = true
+                                    } else {
+                                        customLockFormatInput.visible = false
+                                        SettingsData.setLockDateFormat(formatMap[index])
                                     }
                                 }
                             }
                         }
 
-                        DankTextField {
+                        TextField {
                             id: customLockFormatInput
                             width: parent.width
                             visible: false
@@ -356,7 +352,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "cloud"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -385,7 +381,7 @@ Item {
                             }
                         }
 
-                        DankToggle {
+                        Toggle {
                             id: enableToggle
 
                             anchors.verticalCenter: parent.verticalCenter
@@ -422,7 +418,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "thermostat"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -451,7 +447,7 @@ Item {
                             }
                         }
 
-                        DankToggle {
+                        Toggle {
                             id: temperatureToggle
 
                             anchors.verticalCenter: parent.verticalCenter
@@ -501,7 +497,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "location_on"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -530,7 +526,7 @@ Item {
                             }
                         }
 
-                        DankToggle {
+                        Toggle {
                             id: autoLocationToggle
 
                             anchors.verticalCenter: parent.verticalCenter
@@ -577,7 +573,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankTextField {
+                                    TextField {
                                         id: latitudeInput
                                         width: parent.width
                                         height: 48
@@ -631,7 +627,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankTextField {
+                                    TextField {
                                         id: longitudeInput
                                         width: parent.width
                                         height: 48
@@ -688,7 +684,7 @@ Item {
                                 font.weight: Font.Medium
                             }
 
-                            DankLocationSearch {
+                            LocationSearch {
                                 id: locationSearchInput
                                 width: parent.width
                                 currentLocation: ""
@@ -751,7 +747,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        Icon {
                             name: "visibility"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -768,7 +764,7 @@ Item {
                         
                         Item { Layout.fillWidth: true; width: 1 }
                         
-                        DankIcon {
+                        Icon {
                             id: refreshButton
                             name: "refresh"
                             size: Theme.iconSize
@@ -812,7 +808,7 @@ Item {
                         spacing: Theme.spacingL
                         visible: !WeatherService.weather.available
 
-                        DankIcon {
+                        Icon {
                             name: "cloud_off"
                             size: Theme.iconSize * 2
                             color: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.5)
@@ -842,7 +838,7 @@ Item {
                                 width: weatherIcon.width + tempColumn.width + sunriseColumn.width + Theme.spacingM * 2
                                 height: 70
 
-                                DankIcon {
+                                Icon {
                                     id: weatherIcon
                                     name: WeatherService.getWeatherIcon(WeatherService.weather.wCode)
                                     size: Theme.iconSize * 1.5
@@ -928,7 +924,7 @@ Item {
                                         width: sunriseIcon.width + sunriseText.width + Theme.spacingXS
                                         height: sunriseIcon.height
 
-                                        DankIcon {
+                                        Icon {
                                             id: sunriseIcon
                                             name: "wb_twilight"
                                             size: Theme.iconSize - 6
@@ -952,7 +948,7 @@ Item {
                                         width: sunsetIcon.width + sunsetText.width + Theme.spacingXS
                                         height: sunsetIcon.height
 
-                                        DankIcon {
+                                        Icon {
                                             id: sunsetIcon
                                             name: "bedtime"
                                             size: Theme.iconSize - 6
@@ -1004,7 +1000,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "device_thermostat"
                                             size: Theme.iconSize
@@ -1051,7 +1047,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "humidity_low"
                                             size: Theme.iconSize
@@ -1098,7 +1094,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "air"
                                             size: Theme.iconSize
@@ -1145,7 +1141,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "speed"
                                             size: Theme.iconSize
@@ -1192,7 +1188,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "rainy"
                                             size: Theme.iconSize
@@ -1239,7 +1235,7 @@ Item {
                                         color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        Icon {
                                             anchors.centerIn: parent
                                             name: "wb_sunny"
                                             size: Theme.iconSize

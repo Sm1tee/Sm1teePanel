@@ -379,7 +379,7 @@ Item {
         visible: status === Image.Ready
     }
 
-    DankIcon {
+    Icon {
         anchors.centerIn: parent
         size: 40
         name: "sports_esports"
@@ -417,7 +417,7 @@ Item {
 
                 return appData.appId.charAt(0).toUpperCase()
             }
-            font.pixelSize: 14
+            font.pixelSize: Theme.fontSizeMedium
             color: Theme.primary
             font.weight: Font.Bold
         }
